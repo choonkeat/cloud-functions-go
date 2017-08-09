@@ -34,3 +34,12 @@ test: js localgo
 	node testserver.js
 
 FORCE:
+
+# define APPNAME and STAGEBUCKET
+# https://cloud.google.com/sdk/gcloud/reference/beta/functions/deploy
+deploy: all
+	rm -rf build.deploy # clean
+	unzip -u $(OUT) -d build.deploy
+	cp -r local_modules build.deploy/ #  ¯\_(ツ)_/¯
+	cd build.deploy; gcloud beta functions deploy $(APPNAME) --trigger-http --stage-bucket=$(STAGEBUCKET)
+	rm -rf build.deploy # clean
